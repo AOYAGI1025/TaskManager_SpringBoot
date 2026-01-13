@@ -1,0 +1,41 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <title>Tasks</title>
+</head>
+<body>
+  <h1>Tasks</h1>
+
+  <form method="post" action="/ui/tasks">
+    <input type="text" name="title" placeholder="タスク名" />
+    <button type="submit">追加</button>
+  </form>
+
+  <hr />
+
+  <ul>
+	<li th:each="t : ${tasks}">
+	  <span th:text="${t.id}">1</span> :
+	  <span th:text="${t.title}">title</span>
+	  [<span th:text="${t.status}">TODO</span>]
+
+	  <!-- status変更 -->
+	  <form th:action="@{/ui/tasks/{id}/status(id=${t.id})}" method="post" style="display:inline;">
+	    <select name="status">
+	      <option value="TODO"  th:selected="${t.status == 'TODO'}">TODO</option>
+	      <option value="DOING" th:selected="${t.status == 'DOING'}">DOING</option>
+	      <option value="DONE"  th:selected="${t.status == 'DONE'}">DONE</option>
+	    </select>
+	    <button type="submit">更新</button>
+	  </form>
+
+	  <a th:href="@{/ui/tasks/{id}/edit(id=${t.id})}">編集</a>
+
+	  <form th:action="@{/ui/tasks/{id}/delete(id=${t.id})}" method="post" style="display:inline;">
+	    <button type="submit">削除</button>
+	  </form>
+	</li>
+  </ul>
+</body>
+</html>
